@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .login-container {
+            max-width: 400px; /* Lățimea maximă a containerului */
+            margin: auto; /* Centrează containerul pe pagină */
+            padding: 20px; /* Padding pentru container */
+            background-color: rgba(0, 0, 0, 0.7); /* Fundal semitransparent pentru formular */
+            border-radius: 8px; /* Colțuri rotunjite */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Umbră pentru formular */
+            color: white; /* Text alb pentru contrast */
+        }
+
+        .login-container img {
+            width: 100%; /* Setează lățimea imaginii la 100% din container */
+            height: auto; /* Păstrează proporțiile imaginii */
+            border-radius: 8px 8px 0 0; /* Colțuri rotunjite pentru partea de sus a imaginii */
+        }
+
+        .form-control {
+            margin-bottom: 15px; /* Spațiu între input-uri */
+        }
+
+        .btn-info {
+            width: 100%; /* Lățimea butonului să fie 100% din container */
+        }
+    </style>
+
+    <div class="login-container">
+        <img src="{% static 'cinemafoto.jpg' %}" alt="Cinema Background"> <!-- Imaginea de fundal -->
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                <label>Username</label>
+                <input name="username" class="form-control" type="text" required>
+            </div>
+            <div>
+                <label>Password</label>
+                <input name="password" class="form-control" type="password" required>
+            </div>
+            <br>
+            <div>
+                <button type="submit" class="btn btn-info">Login</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

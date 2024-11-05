@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        /* Reutilizăm stilurile definite anterior */
+        .container {
+            max-width: 1200px; /* Max width for better layout */
+            margin: auto; /* Center the container */
+            padding: 20px; /* Inner padding */
+            background-color: #444; /* Slightly lighter background for contrast */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+        }
+
+        /* Stil pentru antetul tabelului */
+        th {
+            color: white; /* Schimbăm culoarea antetului tabelului în alb */
+            background-color: #555; /* Fundal mai închis pentru contrast */
+        }
+
+        /* Stil pentru rândurile tabelului */
+        td {
+            color: white; /* Textul din celule va fi alb */
+        }
+
+        /* Stil pentru butoanele personalizate */
+        .custom-button {
+            background-color: black; /* Fundal negru */
+            color: white; /* Text alb */
+            padding: 10px 15px; /* Padding uniform pentru toate butoanele */
+            border-radius: 5px; /* Colțuri rotunjite */
+            margin-right: 10px; /* Spațiu între butoane */
+            border: none; /* Fără margini inițial */
+            font-size: 14px; /* Dimensiune font uniformă */
+            transition: box-shadow 0.3s ease; /* Efect de tranziție */
+            display: inline-block; /* Asigură un comportament uniform */
+            text-decoration: none; /* Elimină sublinierea */
+            text-align: center; /* Center text in button */
+        }
+
+        /* Stil pentru butonul Locations */
+        .locations-button {
+            border: 2px solid purple; /* Bordură mov pentru butonul Locations */
+        }
+
+        .locations-button:hover {
+            box-shadow: 0 0 20px rgba(128, 0, 128, 0.8); /* Glow mov la hover */
+        }
+
+        /* Stil pentru butonul Edit */
+        .edit-button {
+            border: 2px solid green; /* Bordură verde pentru butonul Edit */
+        }
+
+        .edit-button:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); /* Glow verde la hover */
+        }
+
+        /* Stil pentru butonul Back */
+        .back-button {
+            border: 2px solid purple; /* Bordură mov pentru butonul Back */
+        }
+
+        .back-button:hover {
+            box-shadow: 0 0 20px rgba(128, 0, 128, 0.8); /* Glow mov la hover */
+        }
+
+        /* Stil pentru butonul Admin */
+        .admin-button {
+            border: 2px solid white; /* Bordură albă pentru butonul Admin */
+        }
+
+        .admin-button:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); /* Glow alb la hover */
+        }
+
+        /* Stil pentru butonul Logout */
+        .logout-button {
+            border: 2px solid red; /* Bordură roșie pentru butonul Logout */
+        }
+
+        .logout-button:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); /* Glow roșu la hover */
+        }
+    </style>
+
+    <div class="container">
+
+        <button class="custom-button locations-button" onclick="window.location.href='{% url 'companies:adaugare_companie' %}'">Add Details</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Name Movie</th>
+                    <th>Anul Lansarii</th>
+                    <th>Nominalizari</th>
+                    <th>Premii</th>
+                    <th>Rating</th>
+                    <th>Actions</th> <!-- Adaugam o coloană pentru acțiuni -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in company_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.name_movie }}</td>
+                        <td>{{ item.anul_lansarii }}</td>
+                        <td>{{ item.nominalizari }}</td>
+                        <td>{{ item.premii }}</td>
+                        <td>{{ item.rating }}</td>
+                        <td>
+                            <button class="custom-button edit-button" onclick="window.location.href='{% url 'companies:edit' item.id %}'">Edit</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

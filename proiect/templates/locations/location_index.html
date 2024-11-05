@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block content %}
+    <style>
+        /* Import a cinema-style font from Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+
+        body {
+            background-color: #333333; /* Dark gray background */
+            color: white; /* White text */
+            font-family: 'Arial', sans-serif; /* Default font for body */
+            margin: 0; /* Remove default margins */
+            padding: 20px; /* Add padding around the body */
+            font-size: 14px; /* Decrease overall font size */
+        }
+
+        .container {
+            max-width: 1200px; /* Max width for better layout */
+            margin: auto; /* Center the container */
+            padding: 20px; /* Inner padding */
+            background-color: #444; /* Slightly lighter background for contrast */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif; /* Cinema-style font for title */
+            text-align: center; /* Center the heading */
+            color: #ffffff; /* White text for heading */
+            font-size: 2.5em; /* Slightly larger font size for the title */
+            font-weight: bold; /* Make the font bold */
+            text-transform: uppercase; /* Uppercase letters for a stylish effect */
+            letter-spacing: 2px; /* Spacing between letters */
+            margin-bottom: 20px; /* Space below the heading */
+        }
+
+        .glowing-button {
+            background-color: black; /* Black background */
+            color: white; /* White text */
+            border: 2px solid purple; /* Purple border */
+            padding: 8px 16px; /* Smaller padding for smaller buttons */
+            text-decoration: none; /* Remove underline */
+            font-size: 14px; /* Smaller font size */
+            border-radius: 5px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            display: inline-block; /* Ensure proper padding */
+            margin-bottom: 20px; /* Space below the button */
+            text-align: center; /* Center text in button */
+        }
+
+        .glowing-button:hover {
+            box-shadow: 0 0 20px rgba(128, 0, 128, 0.8); /* Purple glow */
+            transform: translateY(-2px); /* Jump effect */
+        }
+
+        /* Button styles for actions */
+        .edit-button, .deactivate-button, .activate-button {
+            background-color: black;
+            color: white;
+            padding: 8px 16px; /* Smaller padding for smaller buttons */
+            text-decoration: none; /* Remove underline */
+            font-size: 14px; /* Smaller font size */
+            border-radius: 5px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            border: 2px solid transparent; /* Default transparent border */
+            display: inline-block; /* Ensure buttons display properly */
+            margin: 0 5px; /* Space between action buttons */
+            text-align: center; /* Center text in button */
+        }
+
+        .edit-button {
+            border-color: purple; /* Purple border for Edit */
+        }
+
+        .edit-button:hover {
+            box-shadow: 0 0 20px rgba(128, 0, 128, 0.8); /* Purple glow */
+        }
+
+        .deactivate-button {
+            border-color: red; /* Red border for Deactivate */
+        }
+
+        .deactivate-button:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); /* Red glow */
+        }
+
+        .activate-button {
+            border-color: green; /* Green border for Activate */
+        }
+
+        .activate-button:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); /* Green glow */
+        }
+
+        /* Table styling */
+        table {
+            width: 100%; /* Full width */
+            border-collapse: collapse; /* Collapse borders */
+            margin-top: 20px; /* Space above table */
+        }
+
+        th, td {
+            color: white; /* White text for headers and cells */
+            padding: 12px; /* Cell padding */
+            text-align: center; /* Center text in table cells */
+            border-bottom: 1px solid #555; /* Slightly lighter border for table rows */
+        }
+
+        th {
+            background-color: #555; /* Darker background for headers */
+        }
+
+        /* Row hover effect */
+        tr:hover {
+            background-color: #666; /* Slightly lighter background on row hover */
+        }
+
+        /* Styles for status text as buttons */
+        .status-button {
+            background-color: transparent; /* Transparent background */
+            border: 2px solid; /* Solid border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 8px 16px; /* Padding like a button */
+            margin: 5px; /* Space around the button */
+            color: white; /* White text */
+            font-size: 14px; /* Font size */
+            text-align: center; /* Center text */
+            cursor: pointer; /* Pointer cursor on hover */
+            display: inline-block; /* Display inline */
+            transition: box-shadow 0.3s ease; /* Transition for hover effect */
+        }
+
+        .status-active {
+            border-color: green; /* Green border for active status */
+            text-shadow: 0 0 5px rgba(0, 255, 0, 1), /* Green glow */
+                         0 0 10px rgba(0, 255, 0, 1),
+                         0 0 15px rgba(0, 255, 0, 0.8);
+        }
+
+        .status-inactive {
+            border-color: red; /* Red border for inactive status */
+            text-shadow: 0 0 5px rgba(255, 0, 0, 1), /* Red glow */
+                         0 0 10px rgba(255, 0, 0, 1),
+                         0 0 15px rgba(255, 0, 0, 0.8);
+        }
+
+        .status-button:hover {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* White glow on hover */
+        }
+    </style>
+
+    <div class="container">
+        <h1>Cinema Management</h1>
+        <button class="glowing-button" onclick="window.location.href='{% url 'locations:adaugare' %}'">Add Movie</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Movie</th>
+                    <th>Type</th>
+                    <th>Projection</th>
+                    <th>Price</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in location_list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.movie }}</td>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.projection }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.time }}</td>
+                        <td>
+                            <span class="status-button {% if item.activate %}status-active{% else %}status-inactive{% endif %}">
+                                {% if item.activate %}
+                                    Ruleaza in Cinema
+                                {% else %}
+                                    Nu ruleaza in Cinema
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="edit-button" onclick="window.location.href='{% url 'locations:modifica' item.id %}'">Edit</button>
+                            {% if item.activate is True %}
+                            <button class="deactivate-button" onclick="window.location.href='{% url 'locations:deactiveaza' item.id %}'">Deactivate</button>
+                            {% else %}
+                            <button class="activate-button" onclick="window.location.href='{% url 'locations:activeaza' item.id %}'">Activate</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

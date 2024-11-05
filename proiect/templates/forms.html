@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="col-md-12">
+        <form method="POST" style="display: flex; flex-direction: column; align-items: center;">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="col-md-6" style="margin-bottom: 10px;">
+                    {{ field.label }} {{ field }}
+
+                    <!-- Afișează erorile într-un stil mai atractiv -->
+                    {% if field.errors %}
+                        <div style="color: #a94442; background-color: #f2dede; border: 1px solid #ebccd1; padding: 5px; border-radius: 4px; margin-top: 5px; font-size: 13px;">
+                            {% for error in field.errors %}
+                                <p style="margin: 0;">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <!-- Butonul Salvează centrat -->
+                <button type="submit"
+                        style="background-color: black; color: white; padding: 8px 16px; font-size: 14px; border: 2px solid green; border-radius: 5px;
+                               box-shadow: 0 0 10px rgba(0, 255, 0, 0.8); transition: box-shadow 0.3s ease;">
+                    Salvează
+                </button>
+
+                <!-- Butonul Back centrat -->
+                {% if 'adaugare' in request.path %}
+                    <a href="{% url 'locations:lista_locatii' %}"
+                       style="background-color: black; color: white; padding: 8px 16px; font-size: 14px; border: 2px solid red; border-radius: 5px;
+                              box-shadow: 0 0 10px rgba(255, 0, 0, 0.8); transition: box-shadow 0.3s ease; text-decoration: none; display: inline-block; text-align: center;">
+                        Back
+                    </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock %}
